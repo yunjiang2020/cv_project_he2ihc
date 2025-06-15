@@ -26,30 +26,40 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
 
 - **Method**: StarDist for cell nuclei segmentation
 - **Rationale**: More reliable than color thresholding in estimating nuclear areas
+![image](https://github.com/user-attachments/assets/26305b0d-33b2-4f36-ae47-66a4e7c66657)
+
 
 ## Baseline: ilastik Segmentation
 
 - **Approach**: Manual annotation + ilastik random forest model
 - **Output**: Tumor ratios from H&E and IHC compared
 - **Results**: MAE = 0.0455; MSE = 0.0084; Accuracy = 75–93% depending on threshold
+![image](https://github.com/user-attachments/assets/a6ce450e-8036-4059-a77b-910e35c7f298)
+
 
 ## Deep Learning Models
 
 ### 1. Pix2Pix (Pyramid version)
 - **Model**: Pre-trained pyramid pix2pix
 - **Challenges**: Poor SSIM, due to domain differences (HER2 vs. Ki67, 20× vs. 40× magnification)
+![image](https://github.com/user-attachments/assets/1476dac8-3101-4c2f-8262-3945ebdef080)
+
 
 ### 2. CycleGAN
 - **Advantage**: No need for paired data
 - **Training**: 389 images, various crop sizes
 - **Best Results**: Accuracy = 0.6 with load size of 4096
 - **Limitation**: GPU constraints in Google Colab
+![image](https://github.com/user-attachments/assets/de8f2a69-e102-4cac-9060-790974b3bf95) ![image](https://github.com/user-attachments/assets/c9ac1a6e-688b-4670-90f2-9aa2db27c201)
 
-## 🔮 Future Directions
+
+
+
+## Future Directions
 
 - Try [VirtualMultiplexer (CUT-based)](https://www.biorxiv.org/content/10.1101/2023.11.29.568996v1)
 - Experiment with [Swin Transformer-based GANs](https://arxiv.org/abs/2403.18501)
-- Consider higher-resolution models and more extensive training
+- Explore alternative data source with prominent macrometastases to facilitate more interpretable categorization and improved human-in-the-loop validation.
 
 ## Lessons Learned
 
