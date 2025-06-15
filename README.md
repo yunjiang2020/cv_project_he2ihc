@@ -1,7 +1,7 @@
 
 # Tumor Ratio Estimation from Histological Images Using GANs
 
-This project focuses on estimating tumor ratios in histological whole-slide images (WSIs) by generating immunohistochemistry (IHC)-like images from Hematoxylin and Eosin (H&E) stained slides using deep learning. We tackle the limitations of pixel-wise ground truth availability and morphological subjectivity in H&E by leveraging generative models.
+This project focuses on estimating tumor ratios in histological whole-slide images (WSIs) by generating immunohistochemistry (IHC)-like images from Hematoxylin and Eosin (H&E) stained slides using deep learning. 
 
 ## Project Overview
 
@@ -18,13 +18,13 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
 
 - **Source**: 77 pairs of H&E and Ki67-stained IHC WSIs from [Zenodo](https://zenodo.org/records/11218961)
 - **Preprocessing**:
-  - Tiling and white background removal
+  - Tiling and white background removal (IHC<0.6, HE<0.4)
   - Structural Similarity Index (SSIM) filtering (>0.4)
   - Final dataset: 206 high-quality patch pairs
 
 ### Ground Truth Generation
 
-- **Method**: StarDist for cell nuclei segmentation
+- **Method**: StarDist for cell nuclei segmentation (tutorial: https://www.youtube.com/watch?v=L3dZ6fgmllI code adapted from the author's GitHub)
 - **Rationale**: More reliable than color thresholding in estimating nuclear areas
 ![image](https://github.com/user-attachments/assets/26305b0d-33b2-4f36-ae47-66a4e7c66657)
 
@@ -45,13 +45,13 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
 
 ## Deep Learning Models
 
-### 1. Pix2Pix (Pyramid version)
+### 1. Pix2Pix (Pyramid version) https://github.com/bupt-ai-cz/BCI
 - **Model**: Pre-trained pyramid pix2pix
 - **Challenges**: Poor SSIM, due to domain differences (HER2 vs. Ki67, 20× vs. 40× magnification)
 ![image](https://github.com/user-attachments/assets/1476dac8-3101-4c2f-8262-3945ebdef080)
 
 
-### 2. CycleGAN
+### 2. CycleGAN https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
 - **Advantage**: No need for paired data
 - **Training**: 389 images, various crop sizes
 - **Best Results**: Accuracy = 0.6 with load size of 4096
