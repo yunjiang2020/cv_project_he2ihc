@@ -28,6 +28,9 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
 - **Rationale**: More reliable than color thresholding in estimating nuclear areas
 ![image](https://github.com/user-attachments/assets/26305b0d-33b2-4f36-ae47-66a4e7c66657)
 
+![image](https://github.com/user-attachments/assets/d362d3b8-99cf-4701-abc6-5a29b145da70)
+
+
 
 ## Baseline: ilastik Segmentation
 
@@ -35,6 +38,9 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
 - **Output**: Tumor ratios from H&E and IHC compared
 - **Results**: MAE = 0.0455; MSE = 0.0084; Accuracy = 75–93% depending on threshold
 ![image](https://github.com/user-attachments/assets/a6ce450e-8036-4059-a77b-910e35c7f298)
+
+![image](https://github.com/user-attachments/assets/a7b6020d-8f4e-48e7-9bd1-bc6ae1a224dc)
+
 
 
 ## Deep Learning Models
@@ -55,6 +61,7 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
 ![image](https://github.com/user-attachments/assets/bf10b3bf-bea2-4310-93d1-17da4eb965dc)
 ![image](https://github.com/user-attachments/assets/a6202823-a43e-4795-bb68-de2d773e1fa3)
 ![image](https://github.com/user-attachments/assets/c9ac1a6e-688b-4670-90f2-9aa2db27c201)
+
 Confusion matrix with different load sizes. left to right: 256/2048/4096 pixels
 
 
@@ -62,7 +69,7 @@ Confusion matrix with different load sizes. left to right: 256/2048/4096 pixels
 
 - Try [VirtualMultiplexer (CUT-based)](https://www.biorxiv.org/content/10.1101/2023.11.29.568996v1)
 - Experiment with [Swin Transformer-based GANs](https://arxiv.org/abs/2403.18501)
-- Explore alternative data source with prominent macrometastases to facilitate more interpretable categorization and improved human-in-the-loop validation.
+- Explore alternative data sources with prominent macrometastases to facilitate more interpretable categorization and improved human-in-the-loop validation.
 
 ## Lessons Learned
 
