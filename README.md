@@ -50,9 +50,12 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
 - **Training**: 389 images, various crop sizes
 - **Best Results**: Accuracy = 0.6 with load size of 4096
 - **Limitation**: GPU constraints in Google Colab
-![image](https://github.com/user-attachments/assets/de8f2a69-e102-4cac-9060-790974b3bf95) ![image](https://github.com/user-attachments/assets/c9ac1a6e-688b-4670-90f2-9aa2db27c201)
+![image](https://github.com/user-attachments/assets/de8f2a69-e102-4cac-9060-790974b3bf95)
 
-
+![image](https://github.com/user-attachments/assets/bf10b3bf-bea2-4310-93d1-17da4eb965dc)
+![image](https://github.com/user-attachments/assets/a6202823-a43e-4795-bb68-de2d773e1fa3)
+![image](https://github.com/user-attachments/assets/c9ac1a6e-688b-4670-90f2-9aa2db27c201)
+Confusion matrix with different load sizes. left to right: 256/2048/4096 pixels
 
 
 ## Future Directions
@@ -80,7 +83,7 @@ This project deepened our understanding of:
 | Model Training & Evaluation      | Nov 8 – Nov 21     |
 | Final Report & Presentation      | Nov 21 – Dec 5     |
 
-## 📚 References
+## References
 
 1. Petríková et al. (2024) — [Ki67 expression classification](https://doi.org/10.5220/0012535900003657)  
 2. Isola et al. (2017) — [Pix2Pix](https://arxiv.org/abs/1611.07004)  
