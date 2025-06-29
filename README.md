@@ -21,6 +21,7 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
   - Tiling and white background removal (IHC<0.6, HE<0.4)
   - Structural Similarity Index (SSIM) filtering (>0.4)
   - Final dataset: 206 high-quality patch pairs
+**note** Evaluated image alignment using SSIM and cell-type distributions rather than IoU, due to expected spatial drift after H&E-to-IHC translation via CycleGAN. Prioritized biologically meaningful metrics to assess correspondence at a regional rather than pixel level.
 
 ### Ground Truth Generation
 
