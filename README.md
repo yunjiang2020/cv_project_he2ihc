@@ -60,9 +60,8 @@ This project focuses on estimating tumor ratios in histological whole-slide imag
 - **Limitation**: GPU constraints in Google Colab
 ![image](https://github.com/user-attachments/assets/de8f2a69-e102-4cac-9060-790974b3bf95)
 
-![image](https://github.com/user-attachments/assets/bf10b3bf-bea2-4310-93d1-17da4eb965dc)
 ![image](https://github.com/user-attachments/assets/a6202823-a43e-4795-bb68-de2d773e1fa3)
-![image](https://github.com/user-attachments/assets/c9ac1a6e-688b-4670-90f2-9aa2db27c201)
+
 
 Confusion matrix with different load sizes. left to right: 256/2048/4096 pixels
 
