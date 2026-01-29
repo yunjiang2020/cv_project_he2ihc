@@ -33,7 +33,7 @@ Instead of colour-thresholding IHC images (which are highly sensitive and prone 
     Hematoxylin channel (total nuclei)
     Ki-67 channel (tumour-positive nuclei)
 - Tumour ratio was computed as:
-    Tumour-positive nuclei / total nuclei
+    Tumour-positive nuclei area / total nuclei area
 This produced a more biologically meaningful and reproducible ground truth.
 
 ## Modelling Approaches
@@ -48,12 +48,14 @@ For regression models:
 
 ## Results and Insights
 
-- Random forest segmentation achieved high nominal accuracy but was strongly influenced by class imbalance
-- CycleGAN generated visually plausible IHC-like images, but was constrained by GPU memory and patch resizing
-- ResNet18 and ViT achieved comparable regression performance, with ViT slightly outperforming ResNet
-- Training curves plateaued early, indicating that ground truth pairing quality—not model capacity—was the dominant performance bottleneck
+- Random forest-based segmentation achieved high nominal accuracy but was strongly influenced by class imbalance, highlighting the sensitivity of tree-based methods to skewed label distributions.
+- CycleGAN generated visually plausible IHC-like images. However, effective training was constrained by limited global context and GPU memory, requiring large patch sizes and reduced training size.
+- ResNet18 and Vision Transformer models achieved comparable regression performance, with ViT showing a modest improvement, suggesting limited gains from increased model capacity under noisy supervision.
+- Regression models remained affected by data imbalance, though less severely than decision-tree approaches, indicating partial robustness to skewed label distributions.
+- Training curves plateaued early for regression models, indicating that ground truth pairing quality and H&E–IHC alignment, rather than model expressiveness, were the dominant performance bottlenecks.
+- Subtle cross-modality similarities that are perceptually obvious to human observers appeared challenging for standard architectures to capture, suggesting that richer contextual modelling or more advanced attention mechanisms may be required.
 
-Overall, the results show that quantitative tumour ratio estimation from H&E images is feasible without pixel-level supervision, but fundamentally limited by imperfect H&E–IHC alignment.
+Overall, the results demonstrate that quantitative tumour ratio estimation from H&E images is feasible without pixel-level supervision, but fundamentally constrained by imperfect H&E-IHC alignment and limited cross-modality contextual information.
 
 ## Conclusion
 
@@ -61,9 +63,10 @@ This project presents a research-oriented computational pathology pipeline that 
 
 ## Future Directions
 
-- Improve H&E–IHC pairing at the patch level
-- Explore hybrid approaches combining generative translation with direct regression
-- Extend the pipeline to whole-slide tumor burden estimation
+- Improve H&E–IHC pairing at the patch level through alignment-aware sampling and quality-controlled matching strategies.
+- Extend the framework to additional clinically relevant markers beyond nuclei staining, including HER2 and Vimentin, to assess generalizability across target expression patterns.
+- Explore hybrid modelling strategies that combine generative cross-modality translation with direct regression to balance contextual representation and quantitative robustness.
+- Scale the approach from patch-level inference to whole-slide tumour burden estimation using aggregation and uncertainty-aware slide-level modelling.
 
 ## Keywords
 Computational Pathology · Histology · Weak Supervision · Tumor Burden Estimation · CNN · Vision Transformer · GAN · Biomedical AI
