@@ -42,6 +42,7 @@ Four distinct modelling strategies were evaluated:
 - **CycleGAN** for H&E → IHC translation, enabling indirect tumour estimation via synthetic IHC images
 - **ResNet18 regression**, directly predicting tumour ratio from H&E patches
 - **ViT-B16 regression**, leveraging global morphological context via transformers
+  
 For regression models:
 - Slide-level splitting was strictly enforced prior to patch extraction to prevent cross-slide contamination.
 - Large 4096×4096 tiles were first generated from WSIs and subsequently subdivided into 224×224 training patches.
