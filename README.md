@@ -5,7 +5,7 @@ This project aims to predict Ki-67 proliferation score directly from H&E whole-s
 
 ## Overview
 
-Hematoxylin and eosin (H&E) staining is the most widely used histological technique for visualizing tissue morphology, but it lacks molecular specificity and does not directly report cellular proliferation activity. In contrast, immunohistochemistry (IHC) markers such as Ki-67 provide explicit labeling of proliferating cells, but are costly, less scalable, and often unavailable for large datasets.
+Hematoxylin and eosin (H&E) staining is the most widely used histological technique for visualizing tissue morphology, but it lacks molecular specificity and does not directly report cellular proliferation activity. In contrast, immunohistochemistry (IHC) markers such as Ki-67 provide explicit labelling of proliferating cells, but are costly, less scalable, and often unavailable for large datasets.
 
 This project investigates quantitative estimation of Ki-67 proliferation index directly from H&E whole-slide images under weak supervision. Paired Ki-67 IHC slides are used to derive approximate proliferation scores despite spatial misalignment between consecutive tissue sections. Unlike many clinical deep learning studies that focus on binary classification or coarse staging, this work targets continuous proliferation score prediction, which is critical for studying tumour biology, growth dynamics, and treatment response.
 
@@ -32,8 +32,8 @@ Instead of colour-thresholding IHC images (which are highly sensitive and prone 
 - StarDist was used to segment nuclei in: 
     Hematoxylin channel (total nuclei)
     Ki-67 channel (tumour-positive nuclei)
-- Tumour ratio was computed as:
-    Tumour-positive nuclei area / total nuclei area
+- Ki-67 proliferation ratio was computed as:
+    Ki-67–positive nuclei area / total nuclei area
 This produced a more biologically meaningful and reproducible ground truth.
 
 ## Modelling Approaches
@@ -43,7 +43,8 @@ Four distinct modelling strategies were evaluated:
 - **ResNet18 regression**, directly predicting tumour ratio from H&E patches
 - **ViT-B16 regression**, leveraging global morphological context via transformers
 For regression models:
-- Slide-level splitting was strictly enforced to prevent patch-level data leakage.
+- Slide-level splitting was strictly enforced prior to patch extraction to prevent cross-slide contamination.
+- Large 4096×4096 tiles were first generated from WSIs and subsequently subdivided into 224×224 training patches.
 - Stratified sampling was applied to mitigate label skew toward low proliferation ratios.
 
 ## Results and Insights
