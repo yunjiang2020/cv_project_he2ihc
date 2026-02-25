@@ -1,19 +1,19 @@
 
-# Tumour Ratio Estimation from H&E Histology Images
+# Ki-67 Estimation from H&E Histology Images
 
-This project focuses on estimating tumour ratios in histological whole-slide images (WSIs) by generating immunohistochemistry (IHC)-like images from Hematoxylin and Eosin (H&E) stained slides using deep learning. 
+This project aims to predict Ki-67 proliferation score directly from H&E whole-slide images, using paired Ki-67 IHC slides to generate weak labels for supervised learning.
 
 ## Overview
 
-Hematoxylin and eosin (H&E) staining is the most widely used histological technique for visualizing tissue morphology, but it lacks molecular specificity and cannot directly label tumour cells. In contrast, immunohistochemistry (IHC) stains such as Ki-67 provide explicit tumour cell labelling but are costly, less scalable, and often unavailable for large datasets.
+Hematoxylin and eosin (H&E) staining is the most widely used histological technique for visualizing tissue morphology, but it lacks molecular specificity and does not directly report cellular proliferation activity. In contrast, immunohistochemistry (IHC) markers such as Ki-67 provide explicit labeling of proliferating cells, but are costly, less scalable, and often unavailable for large datasets.
 
-This project addresses the problem of quantitatively estimating tumour burden from H&E images under weak supervision, using Ki-67 IHC slides as imperfect ground truth despite spatial misalignment between consecutive tissue sections. Unlike most clinical deep learning approaches that focus on binary classification or coarse staging, this work targets tumour ratio estimation, a task critical for cancer biology and treatment efficacy studies.
+This project investigates quantitative estimation of Ki-67 proliferation index directly from H&E whole-slide images under weak supervision. Paired Ki-67 IHC slides are used to derive approximate proliferation scores despite spatial misalignment between consecutive tissue sections. Unlike many clinical deep learning studies that focus on binary classification or coarse staging, this work targets continuous proliferation score prediction, which is critical for studying tumour biology, growth dynamics, and treatment response.
 
 ## Key Challenge
 
-H&E and IHC slides are typically obtained from adjacent but non-identical tissue sections, making pixel-wise correspondence unreliable. Direct segmentation-based supervision is therefore infeasible.
+H&E and IHC slides are obtained from adjacent but non-identical tissue sections, making pixel-wise correspondence unreliable and preventing direct cell-level supervision.
 
-To address this, the project reframes tumour estimation as a ratio prediction problem, based on the assumption that tumour-to-tissue ratios remain locally consistent across consecutive sections even when exact alignment is lost.
+To address this, the project reframes the task as a local proliferation ratio prediction problem, based on the assumption that regional Ki-67–derived proliferation statistics remain approximately consistent across consecutive sections, even when exact spatial alignment is imperfect.
 
 ## Dataset and Preprocessing
 
@@ -23,7 +23,7 @@ To address this, the project reframes tumour estimation as a ratio prediction pr
   - Structural Similarity Index (SSIM) filtering (>0.4)
   - Final dataset: 206 high-quality patch pairs
 
-**note** Evaluated image alignment using SSIM and cell-type distributions rather than IoU, due to expected spatial drift after H&E-to-IHC translation via CycleGAN. Prioritized biologically meaningful metrics to assess correspondence at a regional rather than pixel level.
+**note** Because H&E and IHC slides originate from adjacent but non-identical tissue sections, pixel-wise alignment is unreliable. Therefore, alignment quality was assessed using regional structural similarity (SSIM) and consistency of nuclei density distributions, rather than IoU-based overlap. This prioritizes biologically meaningful correspondence over strict spatial matching.
 
 ### Ground Truth Generation
 
@@ -43,30 +43,33 @@ Four distinct modelling strategies were evaluated:
 - **ResNet18 regression**, directly predicting tumour ratio from H&E patches
 - **ViT-B16 regression**, leveraging global morphological context via transformers
 For regression models:
-- Slide-level train/test splitting was enforced to prevent data leakage
-- Sampling strategies were applied to partially mitigate severe label skew toward low tumour ratios
+- Slide-level splitting was strictly enforced to prevent patch-level data leakage.
+- Stratified sampling was applied to mitigate label skew toward low proliferation ratios.
 
 ## Results and Insights
 
-- Random forest-based segmentation achieved high nominal accuracy but was strongly influenced by class imbalance, highlighting the sensitivity of tree-based methods to skewed label distributions.
-- CycleGAN generated visually plausible IHC-like images. However, effective training was constrained by limited global context and GPU memory, requiring large patch sizes and reduced training size.
-- ResNet18 and Vision Transformer models achieved comparable regression performance, with ViT showing a modest improvement, suggesting limited gains from increased model capacity under noisy supervision.
-- Regression models remained affected by data imbalance, though less severely than decision-tree approaches, indicating partial robustness to skewed label distributions.
-- Training curves plateaued early for regression models, indicating that ground truth pairing quality and H&E–IHC alignment, rather than model expressiveness, were the dominant performance bottlenecks.
-- Subtle cross-modality similarities that are perceptually obvious to human observers appeared challenging for standard architectures to capture, suggesting that richer contextual modelling or more advanced attention mechanisms may be required.
-
-Overall, the results demonstrate that quantitative tumour ratio estimation from H&E images is feasible without pixel-level supervision, but fundamentally constrained by imperfect H&E-IHC alignment and limited cross-modality contextual information.
+- Random forest segmentation (ilastik) achieved high nominal accuracy but was highly sensitive to class imbalance, demonstrating that pixel-level tree-based methods can overfit skewed proliferation distributions without careful rebalancing.
+- CycleGAN-based stain translation produced visually plausible synthetic IHC images. However, training was constrained by limited patch-level context and GPU memory requirements. The absence of true pixel-wise alignment between serial sections further limited its utility for precise quantitative estimation.
+- ResNet18 and ViT-B/16 regression models achieved comparable Ki-67 ratio prediction performance. The Vision Transformer showed modest improvement, suggesting that increased receptive field and global context provide some benefit, but gains are limited under weak and noisy supervision. 
+- While regression models were affected by label imbalance, they exhibited greater robustness compared to tree-based segmentation approaches, likely due to continuous optimization and loss smoothing effects.
+- Training curves plateaued early, indicating that performance was constrained less by model capacity and more by supervision quality — specifically, residual H&E–IHC misalignment and proxy-label noise.
+- Cross-modality feature transfer from H&E morphology to Ki-67 proliferation signal appears feasible but limited, suggesting that improved contextual modelling, stronger regularization, or better proxy supervision may be required for substantial performance gains.
 
 ## Conclusion
 
-This project presents a research-oriented computational pathology pipeline that systematically compares segmentation-based, generative, and discriminative approaches for tumour ratio estimation under weak supervision. It highlights the trade-offs between interpretability, robustness, and data requirements, and demonstrates that modern CNN and transformer models can match generative approaches without strictly paired inputs.
+These findings demonstrate that quantitative Ki-67 proliferation index estimation from H&E images is feasible under weak supervision. However, performance is fundamentally constrained by:
+ - Imperfect spatial correspondence between adjacent sections
+ - Construct mismatch between morphology and proliferation
+ - Limited dataset scale and distribution skew
+
+Improvements are therefore more likely to come from enhanced supervision quality and alignment strategies than from increasing model complexity alone.
 
 ## Future Directions
 
-- Improve H&E–IHC pairing at the patch level through alignment-aware sampling and quality-controlled matching strategies.
-- Extend the framework to additional clinically relevant markers beyond nuclei staining, including HER2 and Vimentin, to assess generalizability across target expression patterns.
-- Explore hybrid modelling strategies that combine generative cross-modality translation with direct regression to balance contextual representation and quantitative robustness.
-- Scale the approach from patch-level inference to whole-slide tumour burden estimation using aggregation and uncertainty-aware slide-level modelling.
+- Improve patch-level H&E–IHC correspondence by incorporating alignment-aware sampling and automated quality scoring. This may include regional structural similarity metrics, nuclei density consistency checks, and exclusion of poorly registered areas prior to supervision transfer.
+- Extend cross-modality supervision to additional clinically relevant biomarkers, such as HER2 and Vimentin, to evaluate whether morphology-to-marker prediction generalizes beyond proliferation signals and across distinct molecular expression patterns.
+- Investigate hybrid modelling approaches that combine generative stain translation with direct regression, where synthetic IHC outputs provide auxiliary supervision while regression models retain quantitative robustness.
+- Scale from patch-level prediction to slide-level inference using aggregation strategies (e.g., weighted pooling, stratified sampling of high-variance regions) and uncertainty-aware modelling to improve reliability of whole-slide proliferation estimation.
 
 ## Keywords
 Computational Pathology · Histology · Weak Supervision · Tumor Burden Estimation · CNN · Vision Transformer · GAN · Biomedical AI
